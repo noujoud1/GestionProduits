@@ -1,0 +1,58 @@
+@page
+@model GestionProduits.Pages.Produits.IndexModel
+@{
+    ViewData["Title"] = "Produits";
+}
+@using System.Globalization
+@{
+    var fr = new CultureInfo("fr-FR");
+}
+
+<h1>Produits</h1>
+
+<a asp-page="Create" class="btn btn-success mb-3">Nouveau produit</a>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input asp-for="Recherche" class="form-control" placeholder="Rechercher un nom..." />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+        <a asp-page="Index" class="btn btn-secondary">Réinitialiser</a>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Stock</th>
+            <th>Catégorie</th>
+        </tr>
+        <th></th>   @* dans le <thead> *@
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Produits)
+        {
+            <tr>
+                <td>@item.Nom</td>
+                <td>@item.Prix.ToString("N2", fr) DT</td>                
+                <td>@item.Stock</td>
+                <td>@item.Categorie?.Nom</td>
+                <td>        @* dans le <tr> du foreach *@
+    <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Modifier</a>
+    <a asp-page="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Supprimer</a>
+</td>
+            </tr>
+
+        }
+        <tfoot>
+    <tr>
+        <th colspan="3">Totaux</th>
+        <th>@Model.TotalStock</th>
+        <th colspan="2">Prix moyen : @Model.PrixMoyen.ToString("N2", fr) DT</th>  
+    </tr>
+</tfoot>
+    </tbody>
+</table>
